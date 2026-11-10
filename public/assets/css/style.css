@@ -433,3 +433,50 @@ body {
         padding: 28px;
     }
 }
+
+
+/* ===================================
+   PROPERTIES PAGE
+=================================== */
+
+.properties-page {
+    background-color: #ffffff;
+}
+
+.property-filters {
+    background: #f6f8fa;
+    padding: 28px;
+    border-radius: 14px;
+    border: 1px solid #e9ecef;
+}
+
+.property-filters .form-label {
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.property-filters .form-select {
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.property-filters .form-select:focus {
+    border-color: #c69c57;
+    box-shadow: 0 0 0 0.2rem rgba(198, 156, 87, 0.15);
+}
+
+.property-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 6px;
+    background: #f7efe2;
+    color: #936c32;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+@media (max-width: 768px) {
+    .property-filters {
+        padding: 20px;
+    }
+}
