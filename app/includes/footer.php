@@ -24,6 +24,7 @@
 
             <div class="col-md-3">
                 <h6>Contact</h6>
+                <a href="/privacy.php">Privacy Policy</a>
                 <p>Karachi, Pakistan</p>
                 <a href="/contact.php">Send an Enquiry</a>
             </div>

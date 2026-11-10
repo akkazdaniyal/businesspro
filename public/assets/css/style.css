@@ -560,3 +560,28 @@ body {
         padding: 25px;
     }
 }
+
+
+/* Privacy Policy Page */
+
+.privacy-content {
+    max-width: 850px;
+}
+
+.privacy-content h2 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-top: 35px;
+    margin-bottom: 15px;
+}
+
+.privacy-content h2:first-child {
+    margin-top: 0;
+}
+
+.privacy-content p {
+    color: #66717b;
+    line-height: 1.9;
+    margin-bottom: 20px;
+}
