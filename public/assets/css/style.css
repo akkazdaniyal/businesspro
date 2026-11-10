@@ -299,3 +299,70 @@ body {
     border-color: #e1b774;
     color: #142d40;
 }
+
+
+/* ===================================
+   ABOUT PAGE
+=================================== */
+
+.page-header {
+    background-color: #f6f8fa;
+}
+
+.page-title {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    color: var(--primary);
+}
+
+.page-description {
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+    color: #66717b;
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+.about-image {
+    width: 100%;
+    height: 430px;
+    object-fit: cover;
+    border-radius: 16px;
+}
+
+.about-intro p {
+    line-height: 1.9;
+}
+
+.mission-section {
+    background-color: #f6f8fa;
+}
+
+.mission-card {
+    padding: 40px;
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 14px;
+}
+
+.mission-card h3 {
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.mission-card p {
+    color: #66717b;
+    line-height: 1.8;
+    margin-top: 15px;
+}
+
+@media (max-width: 768px) {
+    .about-image {
+        height: 300px;
+    }
+
+    .mission-card {
+        padding: 28px;
+    }
+}
