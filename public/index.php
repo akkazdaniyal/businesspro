@@ -204,6 +204,93 @@ require_once __DIR__ . '/../app/includes/header.php';
 
         </div>
     </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="why-choose-us py-5">
+        <div class="container py-4">
+
+            <div class="text-center mb-5">
+                <span class="section-label">WHY BUSINESSPRO</span>
+
+                <h2 class="section-title mt-2">
+                    Why Choose Us?
+                </h2>
+
+                <p class="text-muted">
+                    Making your property journey simple,
+                    transparent and convenient.
+                </p>
+            </div>
+
+            <div class="row g-4">
+
+                <div class="col-md-4">
+                    <div class="why-card text-center h-100">
+                        <div class="why-icon">⌂</div>
+
+                        <h4>Property Guidance</h4>
+
+                        <p>
+                            Get assistance exploring property
+                            options that match your needs.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="why-card text-center h-100">
+                        <div class="why-icon">✓</div>
+
+                        <h4>Clear Communication</h4>
+
+                        <p>
+                            Understand the process and make
+                            informed property decisions.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="why-card text-center h-100">
+                        <div class="why-icon">◇</div>
+
+                        <h4>Personalized Support</h4>
+
+                        <p>
+                            Find solutions based on your
+                            preferences and property goals.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact CTA Section -->
+    <section class="contact-cta py-5">
+        <div class="container py-5 text-center">
+
+            <span class="cta-label">
+                LET'S FIND YOUR NEXT PROPERTY
+            </span>
+
+            <h2 class="cta-title mt-3">
+                Ready to Find Your Dream Property?
+            </h2>
+
+            <p class="cta-description mt-3">
+                Whether you're buying, selling or renting,
+                we're here to help you take the next step.
+            </p>
+
+            <a href="/contact.php" class="btn btn-cta mt-4">
+                Get in Touch
+            </a>
+
+        </div>
+    </section>
+
 </main>
 
 <?php

@@ -213,3 +213,89 @@ body {
     color: #53616e;
     font-size: 0.85rem;
 }
+
+/* Why Choose Us */
+
+.why-choose-us {
+    background-color: #ffffff;
+}
+
+.why-card {
+    padding: 38px 28px;
+    border: 1px solid #e9ecef;
+    border-radius: 14px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.why-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.07);
+}
+
+.why-icon {
+    width: 68px;
+    height: 68px;
+    margin: 0 auto 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: #f7efe2;
+    color: #a77b3e;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.why-card h4 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.why-card p {
+    color: #66717b;
+    line-height: 1.7;
+    margin-top: 12px;
+}
+
+/* Contact CTA */
+
+.contact-cta {
+    background: linear-gradient(135deg, #142d40, #25475f);
+    color: #ffffff;
+}
+
+.cta-label {
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    font-weight: 700;
+    color: #e1b774;
+}
+
+.cta-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+}
+
+.cta-description {
+    color: #dce4eb;
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.8;
+}
+
+.btn-cta {
+    background-color: #c69c57;
+    color: #142d40;
+    padding: 14px 32px;
+    border-radius: 8px;
+    font-weight: 700;
+    border: 1px solid #c69c57;
+}
+
+.btn-cta:hover {
+    background-color: #e1b774;
+    border-color: #e1b774;
+    color: #142d40;
+}
