@@ -366,3 +366,70 @@ body {
         padding: 28px;
     }
 }
+
+
+/* ===================================
+   SERVICES PAGE
+=================================== */
+
+.services-page {
+    background-color: #ffffff;
+}
+
+.service-detail-card {
+    padding: 40px;
+    border: 1px solid #e8ebee;
+    border-radius: 16px;
+    background: #ffffff;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.service-detail-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.07);
+}
+
+.service-number {
+    display: inline-block;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #a77b3e;
+    letter-spacing: 2px;
+}
+
+.service-detail-card h3 {
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.service-description {
+    color: #66717b;
+    line-height: 1.8;
+    margin-top: 15px;
+}
+
+.service-features {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 25px;
+}
+
+.service-features li {
+    padding: 10px 0 10px 28px;
+    position: relative;
+    color: #53616e;
+}
+
+.service-features li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #a77b3e;
+    font-weight: 700;
+}
+
+@media (max-width: 768px) {
+    .service-detail-card {
+        padding: 28px;
+    }
+}
