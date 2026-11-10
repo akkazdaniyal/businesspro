@@ -1,9 +1,27 @@
-
 <?php
+
+declare(strict_types=1);
+
+session_start();
+
 $pageTitle = 'Contact Us | BusinessPro Real Estate';
+
+// Generate CSRF token
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
+$contactErrors = $_SESSION['contact_errors'] ?? [];
+$contactSuccess = $_SESSION['contact_success'] ?? null;
+
+unset(
+    $_SESSION['contact_errors'],
+    $_SESSION['contact_success']
+);
 
 require_once __DIR__ . '/../app/includes/header.php';
 ?>
+
 
 <main>
 
@@ -84,11 +102,34 @@ require_once __DIR__ . '/../app/includes/header.php';
                             your property requirements.
                         </p>
 
+                        <?php if ($contactSuccess): ?>
+                            <div class="alert alert-success" role="status">
+                                <?= htmlspecialchars($contactSuccess, ENT_QUOTES, 'UTF-8') ?>
+                            </div>
+                        <?php endif; ?>
+
+                        <?php if (!empty($contactErrors)): ?>
+                            <div class="alert alert-danger" role="alert">
+                                <ul class="mb-0">
+                                    <?php foreach ($contactErrors as $error): ?>
+                                        <li>
+                                            <?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        <?php endif; ?>
+
                         <form
-                            action="#"
+                            action="/submit-contact.php"
                             method="post"
                             id="contactForm"
                         >
+                            <input
+                                type="hidden"
+                                name="csrf_token"
+                                value="<?= htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8') ?>"
+                            >
 
                             <div class="row g-3">
 
@@ -178,20 +219,13 @@ require_once __DIR__ . '/../app/includes/header.php';
                                     ></textarea>
                                 </div>
 
-                                <div class="col-12">
+                                <div class="col-12">                              
                                     <button
                                         type="submit"
                                         class="btn btn-cta w-100"
-                                        disabled
-                                        title="Form submission will be enabled after backend integration"
                                     >
-                                        Send Enquiry (Coming Soon)
+                                        Send Enquiry
                                     </button>
-
-                                    <p class="small text-muted mt-3 mb-0">
-                                        This form is currently a UI demonstration.
-                                        No information is submitted or stored.
-                                    </p>
                                 </div>
 
                             </div>
