@@ -333,3 +333,44 @@
     background: #25475f;
     color: #ffffff;
 }
+
+
+
+/* ===================================
+   ENQUIRY SEARCH AND FILTERS
+=================================== */
+
+.admin-filter-card {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 14px;
+    padding: 24px;
+}
+
+.admin-filter-card .form-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #344454;
+}
+
+.admin-filter-card .form-control,
+.admin-filter-card .form-select {
+    padding: 11px 13px;
+    border-radius: 8px;
+}
+
+.admin-filter-card .form-control:focus,
+.admin-filter-card .form-select:focus {
+    border-color: #c69c57;
+    box-shadow: 0 0 0 0.2rem rgba(198, 156, 87, 0.15);
+}
+
+.admin-filter-card .btn-primary {
+    background: #25475f;
+    border-color: #25475f;
+}
+
+.admin-filter-card .btn-primary:hover {
+    background: #142d40;
+    border-color: #142d40;
+}

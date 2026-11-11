@@ -17,11 +17,27 @@ $adminName = htmlspecialchars(
 $enquiries = [];
 $databaseError = false;
 
-try {
-    $pdo = getDatabaseConnection();
 
-    $stmt = $pdo->query(
-        'SELECT
+$enquiries = [];
+$databaseError = false;
+
+// Read search and filter inputs
+$search = trim((string) ($_GET['search'] ?? ''));
+$status = (string) ($_GET['status'] ?? '');
+$type = (string) ($_GET['type'] ?? '');
+
+// Limit input size
+$search = mb_substr($search, 0, 100);
+
+// Allowed status values
+$allowedStatuses = ['new', 'in_progress', 'closed'];
+
+if (!in_array($status, $allowedStatuses, true)) {
+    $status = '';
+}
+
+// Build query safely
+$sql = 'SELECT
             id,
             full_name,
             email,
@@ -29,16 +45,57 @@ try {
             enquiry_type,
             status,
             created_at
+        FROM enquiries
+        WHERE 1 = 1';
+
+$params = [];
+
+if ($search !== '') {
+    $sql .= ' AND (full_name LIKE :search_name
+                  OR email LIKE :search_email)';
+
+    $params['search_name'] = '%' . $search . '%';
+    $params['search_email'] = '%' . $search . '%';
+}
+
+if ($status !== '') {
+    $sql .= ' AND status = :status';
+    $params['status'] = $status;
+}
+
+// Read available enquiry types from database
+$availableTypes = [];
+
+try {
+    $pdo = getDatabaseConnection();
+
+    $typeStmt = $pdo->query(
+        'SELECT DISTINCT enquiry_type
          FROM enquiries
-         ORDER BY created_at DESC, id DESC'
+         ORDER BY enquiry_type ASC'
     );
+
+    $availableTypes = $typeStmt->fetchAll(PDO::FETCH_COLUMN);
+
+    if ($type !== '' && in_array($type, $availableTypes, true)) {
+        $sql .= ' AND enquiry_type = :type';
+        $params['type'] = $type;
+    } else {
+        $type = '';
+    }
+
+    $sql .= ' ORDER BY created_at DESC, id DESC';
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
 
     $enquiries = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 } catch (PDOException $e) {
-    error_log('Enquiry list error: ' . $e->getMessage());
+    error_log('Enquiry search error: ' . $e->getMessage());
     $databaseError = true;
 }
+
 
 function escapeHtml(string $value): string
 {
@@ -122,6 +179,99 @@ function escapeHtml(string $value): string
                 </div>
 
             <?php else: ?>
+
+                <!-- Search and Filters -->
+                <section class="admin-filter-card mb-4">
+
+                    <form action="/admin/enquiries.php" method="get">
+
+                        <div class="row g-3 align-items-end">
+
+                            <div class="col-lg-5">
+                                <label for="search" class="form-label">
+                                    Search Customer
+                                </label>
+
+                                <input
+                                    type="search"
+                                    id="search"
+                                    name="search"
+                                    class="form-control"
+                                    placeholder="Search by name or email"
+                                    maxlength="100"
+                                    value="<?= escapeHtml($search) ?>"
+                                >
+                            </div>
+
+                            <div class="col-lg-3">
+                                <label for="status" class="form-label">
+                                    Status
+                                </label>
+
+                                <select
+                                    id="status"
+                                    name="status"
+                                    class="form-select"
+                                >
+                                    <option value="">All Statuses</option>
+
+                                    <?php foreach ($allowedStatuses as $option): ?>
+                                        <option
+                                            value="<?= escapeHtml($option) ?>"
+                                            <?= $status === $option ? 'selected' : '' ?>
+                                        >
+                                            <?= escapeHtml(
+                                                ucwords(str_replace('_', ' ', $option))
+                                            ) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+
+                            <div class="col-lg-2">
+                                <label for="type" class="form-label">
+                                    Enquiry Type
+                                </label>
+
+                                <select
+                                    id="type"
+                                    name="type"
+                                    class="form-select"
+                                >
+                                    <option value="">All Types</option>
+
+                                    <?php foreach ($availableTypes as $option): ?>
+                                        <option
+                                            value="<?= escapeHtml($option) ?>"
+                                            <?= $type === $option ? 'selected' : '' ?>
+                                        >
+                                            <?= escapeHtml(ucfirst($option)) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+
+                            <div class="col-lg-2 d-flex gap-2">
+                                <button
+                                    type="submit"
+                                    class="btn btn-primary flex-grow-1"
+                                >
+                                    Filter
+                                </button>
+
+                                <a
+                                    href="/admin/enquiries.php"
+                                    class="btn btn-outline-secondary"
+                                >
+                                    Reset
+                                </a>
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                </section>
 
                 <section class="admin-table-card">
 
