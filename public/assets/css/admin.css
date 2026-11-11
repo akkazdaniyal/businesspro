@@ -374,3 +374,46 @@
     background: #142d40;
     border-color: #142d40;
 }
+
+
+
+/* ===================================
+   ENQUIRY PAGINATION
+=================================== */
+
+.admin-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 22px 25px;
+    border-top: 1px solid #e9ecef;
+}
+
+.admin-pagination .page-link {
+    color: #25475f;
+    border-color: #e3e8ed;
+}
+
+.admin-pagination .page-link:hover {
+    background: #f4f6f9;
+    color: #142d40;
+}
+
+.admin-pagination .page-item.active .page-link {
+    background: #25475f;
+    border-color: #25475f;
+    color: #ffffff;
+}
+
+.admin-pagination .page-item.disabled .page-link {
+    color: #98a3ad;
+}
+
+@media (max-width: 576px) {
+    .admin-pagination {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

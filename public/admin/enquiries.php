@@ -20,9 +20,10 @@ $adminName = htmlspecialchars(
 $enquiries = [];
 $databaseError = false;
 
-
-$enquiries = [];
-$databaseError = false;
+$perPage = 10;
+$currentPage = 1;
+$totalPages = 1;
+$totalRecords = 0;
 
 // Read search and filter inputs
 $search = trim((string) ($_GET['search'] ?? ''));
@@ -87,10 +88,62 @@ try {
         $type = '';
     }
 
-    $sql .= ' ORDER BY created_at DESC, id DESC';
+    // Pagination settings
+    $perPage = 10;
+
+    $pageInput = filter_input(
+        INPUT_GET,
+        'page',
+        FILTER_VALIDATE_INT,
+        ['options' => ['min_range' => 1]]
+    );
+
+    $currentPage = $pageInput ?: 1;
+
+    // Count records matching the current filters
+    $countSql = 'SELECT COUNT(*) FROM enquiries WHERE 1 = 1';
+
+    if ($search !== '') {
+        $countSql .= ' AND (
+            full_name LIKE :search_name
+            OR email LIKE :search_email
+        )';
+    }
+
+    if ($status !== '') {
+        $countSql .= ' AND status = :status';
+    }
+
+    if ($type !== '') {
+        $countSql .= ' AND enquiry_type = :type';
+    }
+
+    $countStmt = $pdo->prepare($countSql);
+    $countStmt->execute($params);
+
+    $totalRecords = (int) $countStmt->fetchColumn();
+
+    $totalPages = max(1, (int) ceil($totalRecords / $perPage));
+    $currentPage = min($currentPage, $totalPages);
+
+    $offset = ($currentPage - 1) * $perPage;
+
+    // Fetch only records for the current page
+    $sql .= ' ORDER BY created_at DESC, id DESC
+            LIMIT :limit OFFSET :offset';
 
     $stmt = $pdo->prepare($sql);
-    $stmt->execute($params);
+
+    // Bind filter parameters
+    foreach ($params as $key => $value) {
+        $stmt->bindValue(':' . $key, $value, PDO::PARAM_STR);
+    }
+
+    // Bind pagination parameters as integers
+    $stmt->bindValue(':limit', $perPage, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+
+    $stmt->execute();
 
     $enquiries = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -299,7 +352,7 @@ function escapeHtml(string $value): string
                         <h2>All Enquiries</h2>
                         <p>
                             Total records:
-                            <strong><?= count($enquiries) ?></strong>
+                            <strong><?= $totalRecords ?></strong>
                         </p>
                     </div>
 
@@ -385,6 +438,86 @@ function escapeHtml(string $value): string
 
                         </table>
                     </div>
+
+                    <?php if (!$databaseError && $totalPages > 1): ?>
+
+                        <nav
+                            class="admin-pagination"
+                            aria-label="Enquiry pagination"
+                        >
+
+                            <p class="mb-0 text-muted">
+                                Page <?= $currentPage ?> of <?= $totalPages ?>
+                            </p>
+
+                            <ul class="pagination mb-0">
+
+                                <?php
+                                // Preserve active search and filters
+                                $queryParams = [
+                                    'search' => $search,
+                                    'status' => $status,
+                                    'type' => $type,
+                                ];
+
+                                $pageUrl = function (int $page) use ($queryParams): string {
+                                    return '/admin/enquiries.php?' . http_build_query(
+                                        array_merge($queryParams, ['page' => $page])
+                                    );
+                                };
+                                ?>
+
+                                <!-- Previous -->
+                                <li class="page-item <?= $currentPage <= 1 ? 'disabled' : '' ?>">
+                                    <?php if ($currentPage > 1): ?>
+                                        <a
+                                            class="page-link"
+                                            href="<?= escapeHtml($pageUrl($currentPage - 1)) ?>"
+                                        >
+                                            Previous
+                                        </a>
+                                    <?php else: ?>
+                                        <span class="page-link">Previous</span>
+                                    <?php endif; ?>
+                                </li>
+
+                                <!-- Page Numbers -->
+                                <?php
+                                $startPage = max(1, $currentPage - 2);
+                                $endPage = min($totalPages, $currentPage + 2);
+                                ?>
+
+                                <?php for ($page = $startPage; $page <= $endPage; $page++): ?>
+                                    <li class="page-item <?= $page === $currentPage ? 'active' : '' ?>">
+                                        <a
+                                            class="page-link"
+                                            href="<?= escapeHtml($pageUrl($page)) ?>"
+                                            <?= $page === $currentPage ? 'aria-current="page"' : '' ?>
+                                        >
+                                            <?= $page ?>
+                                        </a>
+                                    </li>
+                                <?php endfor; ?>
+
+                                <!-- Next -->
+                                <li class="page-item <?= $currentPage >= $totalPages ? 'disabled' : '' ?>">
+                                    <?php if ($currentPage < $totalPages): ?>
+                                        <a
+                                            class="page-link"
+                                            href="<?= escapeHtml($pageUrl($currentPage + 1)) ?>"
+                                        >
+                                            Next
+                                        </a>
+                                    <?php else: ?>
+                                        <span class="page-link">Next</span>
+                                    <?php endif; ?>
+                                </li>
+
+                            </ul>
+
+                        </nav>
+
+                    <?php endif; ?>
 
                 </section>
 
