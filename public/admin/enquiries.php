@@ -6,6 +6,9 @@ require_once __DIR__ . '/../../app/config/database.php';
 
 requireAdmin();
 
+$enquiryFlash = $_SESSION['enquiry_flash'] ?? null;
+unset($_SESSION['enquiry_flash']);
+
 header('Cache-Control: no-store');
 
 $adminName = htmlspecialchars(
@@ -179,6 +182,23 @@ function escapeHtml(string $value): string
                 </div>
 
             <?php else: ?>
+
+            <?php if (
+                is_array($enquiryFlash) &&
+                in_array(
+                    $enquiryFlash['type'] ?? '',
+                    ['success', 'warning', 'danger'],
+                    true
+                ) &&
+                is_string($enquiryFlash['message'] ?? null)
+            ): ?>
+                <div
+                    class="alert alert-<?= escapeHtml($enquiryFlash['type']) ?>"
+                    role="alert"
+                >
+                    <?= escapeHtml($enquiryFlash['message']) ?>
+                </div>
+            <?php endif; ?>
 
                 <!-- Search and Filters -->
                 <section class="admin-filter-card mb-4">

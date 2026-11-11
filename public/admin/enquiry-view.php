@@ -303,6 +303,39 @@ $adminName = escapeHtml(
                         ) ?>
                     </div>
 
+                    <hr class="my-4">
+
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                        <div>
+                            <h2 class="h5 text-danger mb-1">Delete Enquiry</h2>
+                            <p class="text-muted mb-0">
+                                Permanently remove this enquiry from the database.
+                            </p>
+                        </div>
+
+                        <form
+                            action="/admin/delete-enquiry.php"
+                            method="post"
+                            onsubmit="return confirm('Are you sure you want to permanently delete this enquiry? This action cannot be undone.');"
+                        >
+                            <input
+                                type="hidden"
+                                name="csrf_token"
+                                value="<?= escapeHtml($_SESSION['admin_csrf']) ?>"
+                            >
+
+                            <input
+                                type="hidden"
+                                name="enquiry_id"
+                                value="<?= (int) $enquiry['id'] ?>"
+                            >
+
+                            <button type="submit" class="btn btn-outline-danger">
+                                Delete Enquiry
+                            </button>
+                        </form>
+                    </div>
+
                 </div>
 
             </section>
