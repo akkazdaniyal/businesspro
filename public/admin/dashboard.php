@@ -106,9 +106,9 @@ function escapeHtml(string $value): string
                     Enquiries
                 </a>
 
-                <span class="admin-nav-disabled">
-                    Properties (Coming Soon)
-                </span>
+                <a href="/admin/properties.php">
+                    Properties
+                </a>
 
                 <a href="/" target="_blank" rel="noopener noreferrer">
                     View Website
