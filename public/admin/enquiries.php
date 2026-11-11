@@ -195,12 +195,16 @@ function escapeHtml(string $value): string
                                             <td>
                                                 <?= escapeHtml($enquiry['created_at']) ?>
                                             </td>
-
+                                    
                                             <td>
-                                                <span class="text-muted small">
-                                                    View (Next Step)
-                                                </span>
+                                                <a
+                                                    href="/admin/enquiry-view.php?id=<?= (int) $enquiry['id'] ?>"
+                                                    class="btn btn-sm btn-outline-primary"
+                                                >
+                                                    View Details
+                                                </a>
                                             </td>
+
                                         </tr>
 
                                     <?php endforeach; ?>

@@ -307,3 +307,29 @@
         padding: 18px;
     }
 }
+
+
+
+/* ===================================
+   ENQUIRY DETAILS
+=================================== */
+
+.enquiry-message-box {
+    background: #f8fafb;
+    border: 1px solid #e3e8ed;
+    border-radius: 10px;
+    padding: 20px;
+    color: #344454;
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+}
+
+.admin-table-card .btn-outline-primary {
+    border-color: #25475f;
+    color: #25475f;
+}
+
+.admin-table-card .btn-outline-primary:hover {
+    background: #25475f;
+    color: #ffffff;
+}
