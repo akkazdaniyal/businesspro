@@ -102,9 +102,9 @@ function escapeHtml(string $value): string
                     Dashboard
                 </a>
 
-                <span class="admin-nav-disabled">
-                    Enquiries (Coming Soon)
-                </span>
+                <a href="/admin/enquiries.php">
+                    Enquiries
+                </a>
 
                 <span class="admin-nav-disabled">
                     Properties (Coming Soon)
