@@ -6,6 +6,22 @@ require_once __DIR__ . '/../../app/config/database.php';
 
 requireAdmin();
 
+if (empty($_SESSION['admin_csrf'])) {
+    $_SESSION['admin_csrf'] = bin2hex(random_bytes(32));
+}
+
+$allowedStatuses = ['new', 'in_progress', 'closed'];
+
+$statusMessages = [
+    'updated' => 'Enquiry status updated successfully.',
+    'invalid' => 'Invalid status selected.',
+    'error' => 'Unable to update enquiry status.',
+];
+
+$statusMessage = $_GET['result'] ?? '';
+$statusMessage = is_string($statusMessage) ? $statusMessage : '';
+
+
 header('Cache-Control: no-store');
 
 function escapeHtml(string $value): string
@@ -209,6 +225,73 @@ $adminName = escapeHtml(
                         </div>
 
                     </div>
+
+                    <hr class="my-4">
+
+                    <h2 class="h5 mb-3">Update Enquiry Status</h2>
+
+                    <?php if (isset($statusMessages[$statusMessage])): ?>
+                        <div
+                            class="alert <?= $statusMessage === 'updated'
+                                ? 'alert-success'
+                                : 'alert-danger' ?>"
+                            role="alert"
+                        >
+                            <?= escapeHtml($statusMessages[$statusMessage]) ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <form action="/admin/update-enquiry-status.php" method="post">
+
+                        <input
+                            type="hidden"
+                            name="csrf_token"
+                            value="<?= escapeHtml($_SESSION['admin_csrf']) ?>"
+                        >
+
+                        <input
+                            type="hidden"
+                            name="enquiry_id"
+                            value="<?= (int) $enquiry['id'] ?>"
+                        >
+
+                        <div class="row g-3 align-items-end">
+
+                            <div class="col-md-6">
+                                <label for="status" class="form-label fw-semibold">
+                                    Enquiry Status
+                                </label>
+
+                                <select
+                                    id="status"
+                                    name="status"
+                                    class="form-select"
+                                    required
+                                >
+                                    <?php foreach ($allowedStatuses as $option): ?>
+                                        <option
+                                            value="<?= escapeHtml($option) ?>"
+                                            <?= $enquiry['status'] === $option
+                                                ? 'selected'
+                                                : '' ?>
+                                        >
+                                            <?= escapeHtml(
+                                                ucwords(str_replace('_', ' ', $option))
+                                            ) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <button type="submit" class="btn btn-primary">
+                                    Save Status
+                                </button>
+                            </div>
+
+                        </div>
+
+                    </form>
 
                     <hr class="my-4">
 
